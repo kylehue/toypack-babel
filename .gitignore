@@ -1,0 +1,6 @@
+build/
+browser/
+node_modules/
+coverage/
+.DS_Store
+swc/.swcrc

@@ -7,19 +7,19 @@ export default function (options?: TransformOptions): Plugin {
       name: "babel-plugin",
       load: {
          order: "post",
-         handler(dep) {
-            if (dep.type != "script") return;
-            if (!/[jt]sx?$/.test(dep.lang)) return;
+         handler(moduleInfo) {
+            if (moduleInfo.type != "script") return;
+            if (!/[jt]sx?$/.test(moduleInfo.source.split("?")[0])) return;
 
             const opts = Object.assign(
                {
-                  filename: dep.source,
+                  filename: moduleInfo.source,
                   sourceMaps: this.shouldMap(),
                } as TransformOptions,
                options || {}
             );
 
-            const res = transform(dep.content, opts);
+            const res = transform(moduleInfo.content, opts);
             return {
                content: res.code,
                map: res.map,
@@ -29,4 +29,4 @@ export default function (options?: TransformOptions): Plugin {
    };
 }
 
-export * from "@babel/standalone";
+export * as Babel from "@babel/standalone";
